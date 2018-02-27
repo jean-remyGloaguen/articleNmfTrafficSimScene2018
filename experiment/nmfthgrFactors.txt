@@ -1,0 +1,31 @@
+type = 1: =  = {'filter', 'nmf'}
+dictionaryClass = 1: = 1/2 = {'car'}
+numberElement = 1: = 1/2 = [25 50 100 200]  
+frameSize = 1: = 3/[1 2]/1, 3/0/[2 3] = [0 500 1000]
+reduceSizeW	 = 1: = 1/2 = {'kmeans','rand'}
+domain = 2: = 1/2 = {'spectra','thirdOctave'}
+cutOffFreq = 2: =  = [500 1000 2000 5000 10000 20000];  
+dataset = 2: =  = {'grafic'}
+gType = 2: =  = {'park', 'quietStreet', 'noisyStreet', 'veryNoisyStreet'}
+nmfType = 2: = 1/2 = {'supervised','semi-supervised','thresholded'}
+beta = 2: = 1/2 = [0 1 2]
+weightW = 2: = 1/2 = 1
+sparsity = 2: = 1/2 = [0 0.01 0.05 0.1]
+smoothnessBeta0 = 2: = 12/1 = [0 0.001 0.005 0.01 0.05]
+smoothnessBeta1 = 2: = 12/2 = [0 0.5 1 0.1 2]
+smoothnessBeta2 = 2: = 12/3 = [0 0.5 1 2 5 0.1 0.05]
+iteration = 2:s = 1/2 = (1:10)*40
+distanceMethod = 3: = 10/3 = {'cosine','none'}
+methodThreshold = 3: = 18/1 = {'hard','firm'}
+displayDistance = 3: = 18/1  = {'linear'}
+threshold = 3: = 19/[1 2] = 0.00:0.01:0.70
+thresholdFirmHigh = 3: = 19/3 = 0.00:0.01:0.70
+thresholdFirmLow = 3: = 19/3 = 0:0.01:0.45
+temporalInterval =  =  = 1
+window =  =  = 2^12
+noverlap =  =  = 50
+nfft =  =  = 2^12
+sr =  =  = 44100
+p0 =  =  = 2e-5
+
+% 12/0/1, 12/1/2:5, 12/2/6:9, 12/3/10:13 = [0 0.001 0.005 0.01 0.05 0.5 1 1.5 2 5 10 20 30]

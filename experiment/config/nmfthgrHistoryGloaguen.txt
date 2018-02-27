@@ -1,0 +1,5 @@
+NMFThresholdGrafic('addstep','dictionary')
+NMFThresholdGrafic('addStep','dictionary')
+NMFThresholdGrafic('addStep','estimation')
+NMFThresholdGrafic('addStep','threshold')
+NMFThresholdGrafic('addStep','metric')
