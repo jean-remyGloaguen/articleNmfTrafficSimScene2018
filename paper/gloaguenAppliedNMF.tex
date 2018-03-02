@@ -193,14 +193,12 @@ With this operation, $\mathbf{W_0}$ is oriented to the focused sound source (the
 D_{\theta}\left(\mathbf{w_0} \Vert \mathbf{w'} \right) = \frac{\mathbf{w_0}.\mathbf{w'}}{\Vert \mathbf{w_0}  \Vert . \Vert \mathbf{w'} \Vert}.
 \end{equation}
 
-where $\mathbf{w}$ is a $k$ element of $\mathbf{W}$ of $F \times 1$ dimension. When $D_{\theta}\left(\mathbf{w_0} \Vert \mathbf{w'} \right)$=1, the element $k$ from $\mathbf{W'}$ is exactly similar than in $\mathbf{W_0}$. If $D_{\theta}\left(\mathbf{w_0} \Vert \mathbf{w'} \right)$=0, the element is fully different. Next, the similarities are sorted in descending order. The extraction of traffic elements in $\mathbf{W'}$ is carried out by two thresholding methods. For both, the traffic elements are estimated by weighting $\mathbf{W'}$ according to $D_{\theta}\left(\mathbf{w_0} \Vert \mathbf{w'} \right)$ and a threshold value such as :  
+where $\mathbf{w}$ is a $k$ element of $\mathbf{W}$ of $F \times 1$ dimension. When $D_{\theta}\left(\mathbf{w_0} \Vert \mathbf{w'} \right)$=1, the element $k$ from $\mathbf{W'}$ is exactly similar than in $\mathbf{W_0}$. If $D_{\theta}\left(\mathbf{w_0} \Vert \mathbf{w'} \right)$=0, the element is fully different. Next, the similarities are sorted in descending order. The extraction of traffic elements in $\mathbf{W'}$ is carried out by a hard thresholding method \cite{donoho1994threshold}. It consists in weigthing in a binary way the traffic elements $\mathbf{W'}$ according to $D_{\theta}\left(\mathbf{w_0} \Vert \mathbf{w'} \right)$ and a threshold value such as :  
 
 \begin{equation}
 \mathbf{w}_{traffic} = \alpha_k \mathbf{w'}.
 \end{equation}
-
-The first method is the hard thresholding \cite{donoho1995noising}. It selects the traffic elements from $\mathbf{W'}$ in a binary way by comparing their similarities to a fixed threshold $t_h$
-
+with 
 \begin{subequations}\label{eq:WH-TIupdateHard}
 \begin{numcases}{\alpha_k =}
 1  & iff \quad $D_{\theta}\left(\mathbf{w}_{0} \Vert \mathbf{w'} \right) > t_h$, \\
@@ -208,24 +206,12 @@ The first method is the hard thresholding \cite{donoho1995noising}. It selects t
 \end{numcases}
 \end{subequations}
 
-A second approach is based on firm thresholding \cite{gao1997waveshrink} which considers two thresholds, $t_{f,1}$ and $t_{f,2}$ with $t_{f,1}$ $>$ $t_{f,2}$. The weight $\alpha_k$ is then defined as 
-
-\begin{subequations}\label{eq:WH-TIupdateFirm}
-\begin{numcases}{\alpha_k =}
-	1 & {\scriptsize iff $D_{\theta}\left(\mathbf{w}_{0} \Vert \mathbf{w'} \right) > t_{f,1}$} \\
-    0 & {\scriptsize iff $D_{\theta}\left(\mathbf{w}_{0} \Vert \mathbf{w'} \right) \leq t_{f,2}$} \\
-	\mathcal{N} \left(D_{\theta}(\mathbf{w_0}\Vert \mathbf{w'}) \right)& else.
-\end{numcases}
-\end{subequations}
-
-% \dfrac{d_{\beta}(\mathbf{w_0}\Vert \mathbf{w'}) - \min(d_{\beta}(\mathbf{w_0}\Vert \mathbf{w'}))}{\max(d_{\beta}(\mathbf{w_0}\Vert \mathbf{w'}))-\min(d_{\beta}(\mathbf{w_0}\Vert \mathbf{w'}))}
-where $\mathcal{N}\left(D_{\theta}(\mathbf{w_0}\Vert \mathbf{w'}) \right)$ is a normalization between 0 and 1 of the similarity. 
-The most similar elements to $\mathbf{W}_0$ are then keeping as they are whereas the elements whose the similarities are located between the two thresholds are then weighted. The allure of $D_{\theta}\left(\mathbf{W_0} \Vert \mathbf{W'} \right)$ and $\alpha$ are displayed in Figure \ref{fig:example_threshold}.\\
+The allure of $D_{\theta}\left(\mathbf{W_0} \Vert \mathbf{W'} \right)$ and $\alpha$ are displayed in Figure \ref{fig:example_threshold}.\\
 
 \begin{figure}[t]
     \centering
        \includegraphics[width=0.9\linewidth]{./figures/thresh.pdf}
-    \caption{Evolution of the $\alpha$ weight according to $D_{\theta}\left(\mathbf{W_0} \Vert \mathbf{W'} \right)$ for hard thresholding with $t_h$ = 0.6 (in dashed line) and firm thresholding with $t_{f,1}$ = 0.67 and $t_{f,2}$ = 0.40 (in full line)}
+    \caption{Evolution of the $\alpha$ weight according to $D_{\theta}\left(\mathbf{W_0} \Vert \mathbf{W'} \right)$ for hard thresholding with $t_h$ = 0.6 (in dashed line)}
     \label{fig:example_threshold}
 \end{figure}
 
@@ -320,8 +306,8 @@ The obtained dictionary is expressed in third octave bands to decrease the dimen
 
 \subsection{NMF experimental factors}
 
-NMF is performed for 3 $\beta$-divergences: $\beta$ = 2 (euclidean distance), $\beta$ = 1 (Kullback-Leibler divergence) and $\beta = 0$ (Itakura-Sa\"ito divergence). The spectrogram $\mathbf{V}$ and the dictionary $\mathbf{W}$ are displayed in a logarithmic scale through a third band octave representation that reduces the high frequency predominance where the traffic component is absent. In addition, as the number of frequency bins is reduced ($F$ = 29), the computation time is reduced too. 400 iterations are performed to get a stabilized results. For SEM-NMF, the number of elements in $\mathbf{W_r}$ is fixed at $J = 2$. For hard thresholding, the threshold value, $t_h$ is defined between 0.30 and 0.60. For firm thresholding, the high threshold, $t_{f,1}$, is fixed between 0.45 and 0.60, the low threshold, $t_{f,2}$, is fixed between 0.10 and 0.45. All the intervals are defined with a 0.01 step. The cases $t_{f,1} < t_{f,2}$ are, naturally, discarded, see part \ref{part:NMF_TI}.
-Each unique association of modalities between each experimental factor forms a setting. For the filter estimator, 24 settings are computed (4 $\times$ 6). For SUP and SEM-NMF, 240 settings are computed (4 $\times$ 2 $\times$ (2 $\times$ 4 + 1 $\times$ 2) $\times$ 3). Finally, for TI-NMF, the number of settings is much higher (115 320) due to the multiple possible combinations between the threshold values (4 $\times$ 1 $\times$ (2 $\times$ 4 + 1 $\times$ 2) $\times$ 3 $\times$ (31 + (20 $\times$ 31 + $\sum_{i = 15}^{30} i $))).
+NMF is performed for 3 $\beta$-divergences: $\beta$ = 2 (euclidean distance), $\beta$ = 1 (Kullback-Leibler divergence) and $\beta = 0$ (Itakura-Sa\"ito divergence). The spectrogram $\mathbf{V}$ and the dictionary $\mathbf{W}$ are displayed in a logarithmic scale through a third band octave representation that reduces the high frequency predominance where the traffic component is absent. In addition, as the number of frequency bins is reduced ($F$ = 29), the computation time is reduced too. 400 iterations are performed to get a stabilized results. For SEM-NMF, the number of elements in $\mathbf{W_r}$ is fixed at $J = 2$. For hard thresholding, the threshold value, $t_h$ is defined between 0.30 and 0.60 with a 0.01 step. 
+Each unique association of modalities between each experimental factor forms a setting. For the filter estimator, 24 settings are computed (4 $\times$ 6). For SUP and SEM-NMF, 240 settings are computed (4 $\times$ 2 $\times$ (2 $\times$ 4 + 1 $\times$ 2) $\times$ 3). Finally, for TI-NMF, the number of settings is much higher (3720) due to the multiple possible combinations between the threshold values (4 $\times$ 1 $\times$ (2 $\times$ 4 + 1 $\times$ 2) $\times$ 3 $\times$ 31).
 The summarize of the experimental factors and their different modalities is displayed on Tables \ref{tab:experimental_factorsFilter} and \ref{tab:experimental_factorsNMF}. 
 
 The approximated traffic spectrograms $\mathbf{\tilde{V}}_{traffic}$ are obtained after 400 iterations. The estimated traffic sound level in dB, $\tilde{L}_{p, traffic}$, is deducted, 
@@ -388,15 +374,6 @@ where $p_0$ is the reference sound pressure, $p_0 = 2\times 10^{-5}$ Pa. For eac
 \begin{tabularx}{17.5cm}{L{3cm}@{}C{12cm}@{}C{2cm}@{}}
 	\rowcolor[HTML]{C0C0C0} 
    hard threshold $\mathbf{t_h}$ & from 0.30 to 0.60 with a 0.01 step & 31\\
-\end{tabularx}
-
-\begin{tabularx}{17.5cm}{L{3cm}@{}C{12cm}@{}C{2cm}@{}}
-   high firm threshold $\mathbf{t_{f,1}}$ & from 0.30 to 0.60 with a 0.01 step & 31\\
-\end{tabularx}
-
-\begin{tabularx}{17.5cm}{L{3cm}@{}C{12cm}@{}C{2cm}@{}}
-	\rowcolor[HTML]{C0C0C0} 
-      low firm threshold $\mathbf{t_{f,2}}$ & from 0.10 to 0.45 with a 0.01 step & 36\\
    \bottomrule
 \end{tabularx}
 \label{tab:experimental_factorsNMF}
@@ -416,52 +393,43 @@ It is then possible to express the $MAE$ error for each unique setting but, also
 mMAE = \frac{\sum_{i = 1}^4 MAE_i}{4}, 
 \end{equation}
 
-where the other experimental factors (method, $f_c$, $K$, $w_t$, $\beta$, threshold value(s)) are fixed. 
+where the other experimental factors (method, $f_c$, $K$, $w_t$, $\beta$, threshold value $t_h$) are fixed. 
 
 
 \section{Results and discussion}\label{part:results}
 
-Table \ref{tab:results} summarizes the lowest $mMAE$ errors according to the method (LP filter, SUP-NMF, SEM-NMF and Hard/Firm TI-NMF) and $\beta$ with the others corresponding modalities.
+Table \ref{tab:results} summarizes the lowest $mMAE$ errors according to the method (LP filter, SUP-NMF, SEM-NMF and TI-NMF) and $\beta$ with the others corresponding modalities.
 
 \begin{table*}[t]
 \centering
 \caption{Best $mMAE$ errors according to the experimental factors $\beta$ and \textit{method} (in bold letter, the lowest error).}
-\begin{tabular}{@{}ccccccccc@{}}
+\begin{tabular}{@{}ccccccc@{}}
 \toprule
-\textbf{method} & $f_c$ (kHz) & $\mathbf{\beta}$ & $\mathbf{K}$ & $\mathbf{w_t}$ (s) &  $\mathbf{t_h}$ &  $\mathbf{t_{f,1}}$ &  $\mathbf{t_{f,2}}$ & \textbf{$mMAE$} (dB) \\ \midrule
-filter & 20 & - & - & - & - & - & - & 3.76 ($\pm$ 4.35) \\
-filter & 0.5 & - & - & - & - & - & - & 2.14 ($\pm$ 1.83) \\ 
+\textbf{method} & $f_c$ (kHz) & $\mathbf{\beta}$ & $\mathbf{K}$ & $\mathbf{w_t}$ (s) &  $\mathbf{t_h}$ &  \textbf{$mMAE$} (dB) \\ \midrule
+filter & 20 & - & - & - & - & 3.76 ($\pm$ 4.35) \\
+filter & 0.5 & - & - & - & - & 2.14 ($\pm$ 1.83) \\ 
 \hline \hline
-SUP-NMF & - & 0 & 200 & 0.5 & - & - & - & 4.06 ($\pm$ 4.69) \\
-SUP-NMF & - & 1 & 200 & 0.5 & - & - & - & 2.79 ($\pm$ 3.38) \\
-SUP-NMF & - & 2 & 25 & 1 & - & - & - & 2.32  ($\pm$ 2.80) \\ 
+SUP-NMF & - & 0 & 200 & 0.5 & - & 4.06 ($\pm$ 4.69) \\
+SUP-NMF & - & 1 & 200 & 0.5 & - & 2.79 ($\pm$ 3.38) \\
+SUP-NMF & - & 2 & 25 & 1 & - & 2.32  ($\pm$ 2.80) \\ 
 \hline \hline
-SEM-NMF & - & 0 & 200 & 1 & - & - & - & 2.05 ($\pm$ 0.70) \\
-SEM-NMF & - & 1 & 200 & 1 & - & - & - & 1.94 ($\pm$ 0.38) \\
-SEM-NMF & - & 2 & 200 & 1 & - & - & - & 2.39 ($\pm$ 1.23) \\ 
+SEM-NMF & - & 0 & 200 & 1 & - & 2.05 ($\pm$ 0.70) \\
+SEM-NMF & - & 1 & 200 & 1 & - & 1.94 ($\pm$ 0.38) \\
+SEM-NMF & - & 2 & 200 & 1 & - & 2.39 ($\pm$ 1.23) \\ 
 \hline \hline
-Hard TI-NMF & - & 0 & 50 & all & 0.39 & - & - & 1.44 ($\pm$ 1.09)\\
-Hard TI-NMF & - & 1 & 200 & 0.5 & 0.35 & - & - & 1.40 ($\pm$ 1.22)\\
-Hard TI-NMF & - & 2 & 200 & 0.5 & 0.33 & - & - & 1.32 ($\pm$ 1.25)\\
-\hline \hline
-Firm TI-NMF & - & 0 & 50 & all & - & 0.45 & 0.32 & 1.42 ($\pm$ 1.11)\\
-Firm TI-NMF & - & 1 & 50 & all & - & 0.41 & 0.30 & 1.37 ($\pm$ 1.20) \\
-\textbf{Firm TI-NMF} & - & \textbf{2} & \textbf{200} & \textbf{1} & - & \textbf{0.38} & \textbf{0.29} & \textbf{1.31 ($\pm$ 1.26)}\\ 
+TI-NMF & - & 0 & 50 & all & 0.39 & 1.44 ($\pm$ 1.09)\\
+TI-NMF & - & 1 & 200 & 0.5 & 0.35 & 1.40 ($\pm$ 1.22)\\
+\textbf{TI-NMF }& - & \textbf{2} & \textbf{200} & \textbf{0.5} & \textbf{0.33} & \textbf{1.32 ($\pm$ 1.25)}\\
 \bottomrule
 \end{tabular}
 \label{tab:results}
 \end{table*}
 
-
 The LP filter with $f_c = 20$ kHz cut-off frequency is equivalent to considerate the sound level of the entire scene without specific distinction between the sound sources. The error is then important with a high standard deviation ($mMAE =$ 3.76 ($\pm$ 4.35) dB). The lowest error for a LP filter is obtained with $f_c$ = 500 Hz ($mMAE =$ 2.14 ($\pm$ 1.83) dB). It allows a balance between the discarded and remaining energy through the sound environments.
 
 When considering all the sound scenes, SUP-NMF does not succeed to have a lower error than the 500 Hz LP filter for all the $\beta$ values. By adding the mobile part $\mathbf{W_r}$ in the dictionary, SEM-NMF with $\beta = 0$ and $\beta = 1$ allows a lower error than 500 Hz LP filter with a reduced standard deviation especially for $\beta = 1$ ($mMAE = 1.94$ ($\pm$ 0.38) dB).
 
-Hard and Firm TI-NMF are the approaches with the lowest global error ($<$ 1.50 dB). The best result is obtained for firm TI-NMF ($MAE$ = 1.31 $\pm$ 1.26 dB) with $\beta = 2$, $K$ = 200, $w_t$ = 1 s and as threshold values $t_{f,1}$ = 0.38 and $t_{f,2}$ = 0.29. This combination of settings offers the most fitted method to be adapted to all the sound environments. One observes that for firm TI-NMF and for each $\beta$, the thresholds values $t_{f,1}$ and $t_{f,2}$ frame the hard threshold value $t_h$. 
-
-The elements located between these threshold values, included in $\mathbf{W}_{traffic}$, despite a highest distance with the traffic spectra, their impacts can be reduced by the weighting. Firm TI-NMF allows then to take into account more elements as traffic component than hard thresholding and then decrease the $mMAE$ error.
-
-
+TI-NMF is the approach with the lowest global error ($<$ 1.50 dB). The best result is obtained for TI-NMF ($MAE$ = 1.31 $\pm$ 1.26 dB) with $\beta = 2$, $K$ = 200, $w_t$ = 0.5 s and as threshold value $t_h$ = 0.33. This combination of settings offers the most fitted method to be adapted to all the sound environments. 
 Furthermore, on the dictionary creation, except SEM-NMF where all the best methods according to $\beta$ use the same dictionary, no specific dictionary form through all the method, is used. SUP and SEM-NMF privilege a high number of element ($K$ = 200) with a fine description of the audio samples ($w_t \in \lbrace 0.5$,$1 \rbrace$ second). For TI-NMF, the composition of the initial dictionary is more diverse both on the $K$ value and on the finesse  of the description ($w_t \in \lbrace all$,$0.5$, $1 \rbrace$ second). 
 
 From these global results, the $MAE$ errors are compared to the LP filter and each method for the 4 sound environments, see Figure \ref{fig:mae_env}. 
@@ -469,22 +437,22 @@ From these global results, the $MAE$ errors are compared to the LP filter and ea
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/mea_grafic_bar.pdf}
-\caption{$MAE$ errors according each sound environment for the best combination of the LP filter ($f_c$ = 500 Hz), SUP-NMF ($\beta$ = 2, $K$ = 25, $w_t$ = 1 second), SEM-NMF ($\beta$ = 1, $K$ = 200, $w_t$ = 1 second) and firm TI-NMF ($\beta$ = 2, $K$ = 200, $w_t$ = 1 second, $t_{f,1} = 0.38$ and $t_{f,2}$ = 0.29)}
+\caption{$MAE$ errors according each sound environment for the best combination of the LP filter ($f_c$ = 500 Hz), SUP-NMF ($\beta$ = 2, $K$ = 25, $w_t$ = 1 second), SEM-NMF ($\beta$ = 1, $K$ = 200, $w_t$ = 1 second) and TI-NMF ($\beta$ = 2, $K$ = 200, $w_t$ = 0.5 second, $t_{h} = 0.33$)}
 \label{fig:mae_env}
 \end{figure}
 
 Except SEM-NMF, all the methods show the same error evolution the same error evolution: a decrease of the error with the increase of the traffic predominance. SEM-NMF show an almost constant error for all 4 sound environments. The LP filter error is mainly important for environments where the traffic is less present. As this approach considers the remaining energy as the traffic component, no distinction is made between the different sound sources not related to the traffic component. In the opposite, for noisy and very noisy environments, the performances of the LP filter are good ($MAE$ $<$ 1 dB). The errors are then due to a high deletion of the traffic energy by the filter while it becomes the main sound source. 
 
 Despite a fixed dictionary composed of traffic spectra, SUP-NMF fails to identified correctly the traffic component particularly for \textit{park} ($MAE$ = 6.42 dB) environments. With this method, as NMF minimizes the cost function, eq. \ref{eq:min-D-WH}, the dictionary's elements are used to model the other sound sources. In the opposite, for \textit{noisy} and \textit{very noisy} environments, SUP-NMF identifies correctly the traffic components ($MAE$ $<$ 0.6 dB) as it is the main source. 
-In the case of SEM-NMF, adding the mobile dictionary, $\mathbf{W_r}$, makes it possible to include the other sound sources not present in the dictionary. If this behavior is advantageous for the \textit{park} environment ($MAE$ = 1.87 dB) where lot of different kind of sources are present, it is less advantageous for the rest of the environments where the traffic becomes predominant resulting in the highest errors. Indeed, this degree of freedom generates higher error as $\mathbf{W_r}$ is not constrained and is free to include traffic component in it, penalizing the traffic sound level estimation.
+In the case of SEM-NMF, adding the mobile dictionary, $\mathbf{W_r}$, makes it possible to include the other sound sources not present in the dictionary. If this behavior is advantageous for the \textit{park} environment ($MAE$ = 2.10 dB) where lot of different kind of sources are present, it is less advantageous for the rest of the environments where the traffic becomes predominant resulting in the highest errors. Indeed, this degree of freedom generates higher error as $\mathbf{W_r}$ is not constrained and is free to include traffic component in it, penalizing the traffic sound level estimation.
 
-Besides having the lowest $mMAE$ error, TI-NMF presents the most performing results. The park environment is the only case where an other NMF approach out-performed significantly firm TI-NMF ($MAE$ = 3.05 dB). In this sound environment, the traffic dictionary is then composed, in average, of more than half the 200 elements in $\mathbf{W'}$ (136 elements). For the rest of the sound environments, firm TI-NMF has the lowest error. For very noisy environment the error is even very low ($MAE=$ 0.30 dB). In this case, in average, $\mathbf{W'}$ is composed of 198 traffic elements. This method out-performed SUP-NMF since, as $\mathbf{W_0}$ is updated, the final dictionary $\mathbf{W'}$ is then most suited to the sound scene than a fixed dictionary. The advantage to have an unique dictionary suited to each sound scene makes TI-NMF very performing when traffic is predominant while, by the thresholding, it limits the dictionary derivation when the traffic is less present.
+Besides having the lowest $mMAE$ error, TI-NMF presents the most performing results. The park environment is the only case where an other NMF approach out-performed significantly TI-NMF ($MAE$ = 3.05 dB). In this sound environment, the traffic dictionary is then composed, in average, of more than half the 200 elements in $\mathbf{W'}$ (136 elements). For the rest of the sound environments, TI-NMF has the lowest error. For very noisy environment the error is even very low ($MAE=$ 0.31 dB). In this case, in average, $\mathbf{W'}$ is composed of 198 traffic elements. This method out-performed SUP-NMF since, as $\mathbf{W_0}$ is updated, the final dictionary $\mathbf{W'}$ is then most suited to the sound scene than a fixed dictionary. The advantage to have an unique dictionary suited to each sound scene makes TI-NMF very performing when traffic is predominant while, by the thresholding, it limits the dictionary derivation when the traffic is less present.
 
 \section{Conclusion}
 
 A non-negative matrix factorization frame has been applied as a source separation tool to estimate the traffic sound level  from a corpus of urban sound scenes artifically built. In addition, the realism of the scenes has been verified thanks to a perceptual test. The proposed protocol generate audio sample similar than the outputs of a deployed sensor networks with tha advantages of the simulation process (sound level and position of each source controlled and known).
 
-The results confirm the interest of this method on such sound environments. It easily takes into account the overlap between the multiple sound sources present in cities and is suited to monophonic sensor networks. Different NMF formula have been studied through the supervised and semi-supervised approach. On all the sound environments, these common approaches reveal to be not sufficiently efficient: supervised NMF approach, with its fixed dictionary, does not succeed to estimate correctly the traffic sound level especially when this sound source is quiet, while semi-supervised approach with the presence of a mobile part in the dictionary is the best estimator for \textit{park} environments but failed on heavily traffic scenes. Finally, the proposed approach, namely Thresholded Initialized NMF, achieved the lowest error with an initialized updated dictionary. By considering the elements the most similar to traffic spectra with a firm thresholding, it makes it possible to adapt specifically the dictionary to the sound scenes. Consequently, in the case where the emplacement or the sound environment of the sensors cannot be identified (for instance within a mobile measurement framework), firm TI-NMF, with $\beta = 2$, $K$ = 200, $w_t = 1$ second, $t_{f,1} = 0.38$ and $t_{f,2}$ = 0.29, seems the best generic framework, for the sound corpus studied. But if the sound environment can be identified through a prior analysis, or based on positioning data \cite{can2015noise,lavandier2016urban}, it seems possible to adapt the proposed work by selecting the most efficient approach (for instance SEM-NMF within parks), in order to further reduce the error in the estimated road traffic sound levels.
+The results confirm the interest of this method on such sound environments. It easily takes into account the overlap between the multiple sound sources present in cities and is suited to monophonic sensor networks. Different NMF formula have been studied through the supervised and semi-supervised approach. On all the sound environments, these common approaches reveal to be not sufficiently efficient: supervised NMF approach, with its fixed dictionary, does not succeed to estimate correctly the traffic sound level especially when this sound source is quiet, while semi-supervised approach with the presence of a mobile part in the dictionary is the best estimator for \textit{park} environments but failed on heavily traffic scenes. Finally, the proposed approach, namely Thresholded Initialized NMF, achieved the lowest error with an initialized updated dictionary. By considering the elements the most similar to traffic spectra with a hard thresholding, it makes it possible to adapt specifically the dictionary to the sound scenes. Consequently, in the case where the emplacement or the sound environment of the sensors cannot be identified (for instance within a mobile measurement framework), TI-NMF, with $\beta = 2$, $K$ = 200, $w_t = 1$ second, $t_{h} = 0.33$, seems the best generic framework, for the sound corpus studied. But if the sound environment can be identified through a prior analysis, or based on positioning data \cite{can2015noise,lavandier2016urban}, it seems possible to adapt the proposed work by selecting the most efficient approach (for instance SEM-NMF within parks), in order to further reduce the error in the estimated road traffic sound levels.
 Further analyses are required to extend the proposed method to other sound sources, such as birds or voices sounds, by replacing or adding elements in the built dictionary. This would prove useful in the context of muti-source noise mapping that is  gaining interest \cite{aumond2017Probabilistic, aletta2015soundscape}. Finally, the selected parameters stand for the corpus of sound mixtures of this study. Further analyses on various corpus of sound scenes are needed to test the robustness of the method, and select the most relevant approaches for specific sound environments (predominance of water or industrial sounds, rural environments \dots).
 
 For reproducible purposes, the experimental protocol and the programs developed under the Matlab software are available online. This study proposes also a realistic urban sound corpus that could be greatly appreciate for research communities dedicated to the detection, identification or source separation tasks.
