@@ -244,7 +244,28 @@ As output, \textit{SimScene} generates an audio of the global sound mixture and 
 To transcribe the recordings in simulated scenes, a high quality sound database (wav format, 44.1 kHz sampling rate, high \textit{Signal Noise Ratio}) has been built-up from audio samples found online (\textit{freesound.org}) or with the help of an already existing sound database \cite{salamon2014dataset}. The sound database is composed of two categories of sound : the \textit{event} category, which includes 245 brief sound samples considered as salient, with a 1 to 20 seconds duration and classified among 21 sound classes (\textit{ringing bell, whistling bird, car horn, passing car, hammer, barking dog, siren, footstep, metallic noise, voice \dots}) and the \textit{background} (or \textit{texture}) category gathering 154 long duration sounds ($\approx$ 1m30), whose acoustic properties do not vary in time. This category includes among others\textit{whistling bird, crowd noise, rain, children playing in schoolyard, constant traffic noise} \dots sound classes. Each sound class is present in multiple samples (\textit{carHorn01.wav, carHorn02.wav \dots}) to bring diversity.
 As the road traffic is the main component in urban environment and is the sound source of interest, recordings of car passages has been made on the Ifsttar's runway. The recordings has been made for 4 cars (Renault Senic, Renault Megane and Renault Clio, Dacia Sandero),  for different speeds and gear ratios. In all, 103 car passages have been recorded. The audio samples of the first two cars (Renault Senic and Renault Megane) are included in the \textit{SimScene}'s sound database (50 audio files totally). The last 53 audio samples are dedicated to the dictionary design as part of NMF, see section \ref{part:dictionary_building}. A full description of the recording can be found in \cite{gloaguen_creation_2017}.
 
-With this built-up database, the \textit{SimScene} software and the annotations of the recordings, 74 simulated sound scenes are generated, which have the same temporal structure than the recordings. The \textit{ebr} parameter is adjusted manually on each sound scene to be faithful compared to the recorded scenes. To validate its realism, the corpus of transcribed urban sound scenes is submitted to a perceptual test.
+\begin{table}[t]
+\centering
+\caption{$mTIR$ for each sound environment}
+\begin{tabular}{lc}
+ & $mTIR$ (dB)\\ \hline
+ park & -9.10 ($\pm$ 7.35) \\
+ quiet street & 0.88 ($\pm$ 5.92) \\
+ noisy street & 6.96 ($\pm$ 5.16) \\
+ very noisy street & 15.75 ($\pm$ 9.78) \\ \hline
+\end{tabular}
+\label{tab:mTIR}
+\end{table}
+
+With this built-up database, the \textit{SimScene} software and the annotations of the recordings, 74 simulated sound scenes are generated, which have the same temporal structure than the recordings. The \textit{ebr} parameter is adjusted manually on each sound scene to be faithful compared to the recorded scenes. To validate this adjustment, the mean \textit{Traffic Interfering Ratio} is calculated and summarized on Table \ref{tab:mTIR}. It expresses, on all the scenes of an sound environment, the mean difference between the equivalent traffic sound levels of each scene, $L_{p,traffic}$, with the sound level of the \textit{interfering} sound class, $L_{p, interfering}$, which gathered all the other sound sources not related to the traffic, see Eq \ref{eq:mTIR}. It quantifies the predominance of the traffic component on the 4 sound environments.
+
+\begin{equation}\label{eq:mTIR}
+mTIR = \frac{\sum_{i = 1}^M L_{p,traffic} - L_{p, interfering}}{M}.
+\end{equation}
+
+As it is the sound environment where the traffic is less present, the $mTIR$ is always negative for the \textit{park}. The \textit{interfering} sound class is therefore the main sound source. In the case of the \textit{quiet street}, the $TIR$ can be positive or negative depending on the traffic presence on the scene. For the 2 others sound environments, when the traffic become the main sound source, $mTIR$ is always positive.
+
+To validate its realism, the corpus of transcribed urban sound scenes is submitted to a perceptual test.
 
 \subsection{Perceptual test}
 The perceptual test is conducted with a panel of 50 listeners that are asked to assess the level of realism on a 7-point scale (1 is \textit{not realistic at all}, 7 is \textit{very realistic}) of a mix of transcribed and recorded scenes. The total number of sound scenes tested is set at 40. The first half includes 20 30-seconds audio files, including 5 scenes that belong to the sound environment \textit{park}, 6 from \textit{quiet street}, 4 from \textit{noisy street} and 5 from \textit{very noisy street} chosen randomly among the recorded scenes. The second half is composed of the same 30-second transcribed scenes. In order to limit the duration of the test and to preserve the concentration of the listeners, each of them listens a subset of 20 sound scenes, which mix recorded and transcribed samples. Furthermore, all the scenes are normalized to the same sound level, chosen at 65 dB, to prevent the listeners from changing the sound level of their speakers.
