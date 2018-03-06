@@ -93,7 +93,7 @@ Many works have dealt with the detection \cite{luitel2016sound} or the recogniti
 Dedicated to the traffic, in \cite{socoro_anomalous_2017}, an Anomalous Event Detection, based on MFCC features, is proposed with the specific aim to improve the traffic sound estimation. It is based on the detection of sound events in order to discard them. 
  
 
-An other approach, followed in this paper, is to consider the Blind Source Separation paradigm, see Figure \ref{fig:source_separation}, which consists in the extraction of a specific signal inside a set of mixed signals. From the different existing methods (CASA, ICA), Non-negative Matrix Factorization (NMF) \cite{lee_learning_1999}, seems the most relevant method for monophonic sensor networks. Dealing easily with the overlapping between the sound sources, this method approximes the magnitude spectrogram of a single signal by the product of two non negative matrices. A lot of applications can be found for musical \cite{smaragdis_non-negative_2003, benetos2006musical} and speech \cite{wilson_speech_2008, mysore2011non} contents. Dedicated to sound separation, Immani and Kasa\"i \cite{satoshi_innami_nmf-based_2012} used NMF in a two steps sound separation with the help of time variant gain features. A first study [article JASM] has been conducted, in which diverse NMF formula, namely the supervised, the semi-supervised, and the threshold initialized NMF, have been applied on a large set of simulated sound scenes that which mixed traffic component with specific urban sounds at calibrated sound levels. The study proved the interest of NMF for urban sound environments and compared the benefits of each approach. However, it has now to face to real urban sound scenes.
+An other approach, followed in this paper, is to consider the Blind Source Separation paradigm, see Figure \ref{fig:source_separation}, which consists in the extraction of a specific signal inside a set of mixed signals. From the different existing methods (CASA, ICA), Non-negative Matrix Factorization (NMF) \cite{lee_learning_1999}, seems the most relevant method for monophonic sensor networks. Dealing easily with the overlapping between the sound sources, this method approximes the magnitude spectrogram of a single signal by the product of two non negative matrices. A lot of applications can be found for musical \cite{smaragdis_non-negative_2003, benetos2006musical} and speech \cite{wilson_speech_2008, mysore2011non} contents. Dedicated to sound separation, Immani and Kasa\"i \cite{satoshi_innami_nmf-based_2012} used NMF in a two steps sound separation with the help of time variant gain features. A first study \cite{gloaguen2018Estimation} has been conducted, in which diverse NMF formula, namely the supervised, the semi-supervised, and the threshold initialized NMF, have been applied on a large set of simulated sound scenes that which mixed traffic component with specific urban sounds at calibrated sound levels. The study proved the interest of NMF for urban sound environments and compared the benefits of each approach. However, it has now to face to real urban sound scenes.
 
 In this paper, the NMF framework is applied on a corpus of simulated sound scenes, generated based on annotated urban recordings, and whose realism is validated by a perceptual test. The NMF framework and its different implemented versions are described in section \ref{part:nmf}. Next, the corpus of urban sound scenes is presented in section \ref{part:urban_scene}, from the sound database built-up to its validation through a perceptual test. Finally, in section \ref{part:expProtocol} and \ref{part:results}, the experimental protocol and the results are exposed.
 
@@ -205,15 +205,6 @@ with
  0 & else.
 \end{numcases}
 \end{subequations}
-
-The allure of $D_{\theta}\left(\mathbf{W_0} \Vert \mathbf{W'} \right)$ and $\alpha$ are displayed in Figure \ref{fig:example_threshold}.\\
-
-\begin{figure}[t]
-    \centering
-       \includegraphics[width=0.9\linewidth]{./figures/thresh.pdf}
-    \caption{Evolution of the $\alpha$ weight according to $D_{\theta}\left(\mathbf{W_0} \Vert \mathbf{W'} \right)$ for hard thresholding with $t_h$ = 0.6 (in dashed line)}
-    \label{fig:example_threshold}
-\end{figure}
 
 These methods are applied on simulated sound scenes in order to compare the estimated sound levels with the exact solutions. In \cite{}, the sound corpus was composed of a mix of traffic samples with specific sound classes (\textit{alert, animals, climate, human, mechanics, transportation}. Here, in order to implement this method in embedded sensors, a new more realistic sound corpus is generated based on urban recordings mixing all kind of sound sources.
 
