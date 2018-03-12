@@ -96,11 +96,14 @@ Many works have dealt with the detection \cite{luitel2016sound} or the recogniti
 Dedicated to the traffic, in \cite{socoro_anomalous_2017}, an Anomalous Event Detection, based on MFCC features, is proposed with the specific aim to improve the traffic sound estimation. It is based on the detection of unwanted sound events in order to discard them.
 
 
-An other approach, followed in this paper, is to consider the blind source separation paradigm which consists in the extraction of a specific signal inside a set of mixed signals, see Figure \ref{fig:source_separation}. From the different existing methods, Non-negative Matrix Factorization (NMF) \cite{lee_learning_1999}, appers to be a relevant method for monophonic sensor networks. Many applications can be found for musical \cite{smaragdis_non-negative_2003, benetos2006musical} and speech \cite{wilson_speech_2008, mysore2011non} contents. Dedicated to sound separation, Immani and Kasa\"i \cite{satoshi_innami_nmf-based_2012} used NMF in a two steps sound separation with the help of time variant gain features. A first study \cite{gloaguen2018Estimation} has been conducted, in which diverse NMF estimation rules are compared, namely the supervised, the semi-supervised, and the threshold initialized NMF, have been applied on a large set of simulated sound scenes that which mixed traffic component with specific urban sounds at calibrated sound levels. The study demonstrated the interest of NMF for urban sound environments and compared the benefits of each approach on a validation corpus, designed to . However, it has now to face to real urban sound scenes.
+An other approach, followed in this paper, is to consider the blind source separation paradigm which consists in the extraction of a specific signal inside a set of mixed signals, see Figure \ref{fig:source_separation}. From the different existing methods, Non-negative Matrix Factorization (NMF) \cite{lee_learning_1999}, appers to be a relevant method for monophonic sensor networks. Many applications can be found for musical \cite{smaragdis_non-negative_2003, benetos2006musical} and speech \cite{wilson_speech_2008, mysore2011non} contents. Dedicated to sound separation with environmental sound, Immani and Kasa\"i \cite{satoshi_innami_nmf-based_2012} used NMF in a two steps sound separation with the help of time variant gain features. 
+A first study \cite{gloaguen2018Estimation} has been conducted, in which diverse NMF estimation rules are compared, namely the supervised, the semi-supervised, and the threshold initialized NMF, have been applied on a large set of simulated sound scenes. This corpus mixes 6 sound categories (\textit{alert, animals, climate, humans, mechanics, transportation}) with a traffic component calibrated to different sound levels to obtain variable traffic predominance. 
+The diversity of this corpus was made to assess the performances and the limits of each NMF formula. 
+However, if it reveals the interest of NMF for urban sound environments, the assessment of its performance on a corpus of realistic sound scenes must be carried out in order to implement it on a sensor network. 
+Design realistic urban sound mixtures makes it possible to access to many acoustic proprieties as the onset and offset time and the sound level of each sound class and especially the traffic component. However, like all simulated process, the issue of its realism has to be resolved in order to validate the NMF performances. 
 
-\ml{la fin de ce par est a revoir car c'est le point crucial du papier. Bien expliquer le corpus du papier d'avant, son usage, les questions qui restent en suspens et en quoi on passe ici a l'étape superieure en y repondant.}
-
-In this paper, the NMF framework is applied on a corpus of simulated sound scenes, generated based on annotated urban recordings, and whose degree of realism is validated through a perceptual test. The NMF framework and its different optimization strategies are described in section \ref{part:nmf}. Next, the corpus of urban sound scenes is presented in section \ref{part:urban_scene}, from the sound database built-up to its validation. The experimental protocol and the results are then presented and discussed in section \ref{part:expProtocol} and \ref{part:results}.
+In this paper, a realistic urban sound corpus based on annotated urban recordings, and whose degree of realism is validated through a perceptual test, is designed in order to estimate the traffic sound level with the help of the NMF framework.
+The different NMF approaches are described in section \ref{part:nmf}. Next, the corpus of urban sound scenes is presented in section \ref{part:urban_scene}, from the sound database built-up to its validation. The experimental protocol and the results are then presented and discussed in section \ref{part:expProtocol} and \ref{part:results}.
 
 \section{Non-negative Matrix Factorization}\label{part:nmf}
 
@@ -159,7 +162,7 @@ Here, in an urban context, if the sound sources are known, their audio samples c
 
 \subsection{Semi-supervised NMF}
 
-The main issue with the supervised approach is the representational limit imposed by a fixed $\mathbf{W}$. To be completely successful, all the acoustical sources must be considered in it which is not possible in an urban environment. However, in our application setting, the main source of interest, \textit{i.e.} the traffic, can be known \textit{a priori} \ml{manque une phrase} semi-supervised NMF (SEM-NMF) \cite{lee_semi-supervised_2010} is considered to better take into account the interfering sound sources. To do so, $\mathbf{W}_{F \times (K+J)}$ is decomposed into two distinctive matrices: $\mathbf{W} = \left[ \mathbf{W_s}~\mathbf{W_r} \right]$ where $\mathbf{W_s}_{F \times K}$ is a fixed part of $\mathbf{W}$ composed of audio spectra and $ \mathbf{W_r}_{F \times J}$, a mobile part which is updated, see eq. \ref{eq:W_r_SS}. Thus it is possible to include elements not present in $\mathbf{W_s}$. The dimension of $\mathbf{W_r}$ is set up as $J << K$ in order to best considered the sound source present in $\mathbf{W_s}$. $\mathbf{H}$ is then also decomposed in two matrices, $\mathbf{H}_{(K+J) \times N} = \genfrac[]{0pt}{0}{\mathbf{H_s}}{\mathbf{H_r}}$. The eq. \ref{eq:nmf} becomes
+The main issue with the supervised approach is the representational limit imposed by a fixed $\mathbf{W}$. To be completely successful, all the acoustical sources must be considered in it which is not possible in an urban environment. To overcome this issue, semi-supervised NMF (SEM-NMF) \cite{lee_semi-supervised_2010} is considered. It consists in decomposing, $\mathbf{W}_{F \times (K+J)}$ into two distinctive matrices: $\mathbf{W} = \left[ \mathbf{W_s}~\mathbf{W_r} \right]$ where $\mathbf{W_s}_{F \times K}$ is a fixed part of $\mathbf{W}$ composed of audio spectra and $ \mathbf{W_r}_{F \times J}$, a mobile part which is updated, see eq. \ref{eq:W_r_SS}. Thus it is possible to include elements not present in $\mathbf{W_s}$. The dimension of $\mathbf{W_r}$ is set up as $J << K$ in order to best considered the sound source present in $\mathbf{W_s}$. $\mathbf{H}$ is then also decomposed in two matrices, $\mathbf{H}_{(K+J) \times N} = \genfrac[]{0pt}{0}{\mathbf{H_s}}{\mathbf{H_r}}$. The eq. \ref{eq:nmf} becomes
 
 \begin{equation}
 \mathbf{V} \approx \mathbf{WH} = \mathbf{W_s H_s}+\mathbf{W_r H_r}.
@@ -177,7 +180,7 @@ $\mathbf{H_r}$ and $\mathbf{H_s}$ are updated separately, see eq. \ref{eq:H_r_SS
 \end{align}
 \end{subequations}}
 
-In this study, $\mathbf{W_s}$ is composed of traffic audio spectra to include in $\mathbf{W_r}$ all the other sources that can be present in the urban sound scenes. The traffic signal estimation is next defined by the fixed part,
+In this study, $\mathbf{W_s}$ is composed of traffic audio spectra, as it is the sound source of interest, to include in $\mathbf{W_r}$ all the other sources that can be present in the urban sound scenes. The traffic signal estimation is next defined by the fixed part,
 
 \begin{equation}\label{eq:separationExtraction_SS}
 \mathbf{\tilde{V}}_{traffic} = \left[ \mathbf{W_s H_s} \right].
@@ -199,7 +202,7 @@ With this operation, $\mathbf{W_0}$ is oriented to the focused sound source (the
 D_{\theta}\left(\mathbf{w_0} \Vert \mathbf{w'} \right) = \frac{\mathbf{w_0}.\mathbf{w'}}{\Vert \mathbf{w_0}  \Vert . \Vert \mathbf{w'} \Vert}.
 \end{equation}
 
-where $\mathbf{w}$ is a $k$ element of $\mathbf{W}$ of $F \times 1$ dimension. When $D_{\theta}\left(\mathbf{w_0} \Vert \mathbf{w'} \right)$=1, the element $k$ from $\mathbf{W'}$ is equal to the in $\mathbf{W_0}$ \ml{pas clair, a quoi sert le k ?}. If $D_{\theta}\left(\mathbf{w_0} \Vert \mathbf{w'} \right)$=0, the element is fully different. Next, the similarities are sorted in descending order \ml{le sort n'est pas necessaire, le seuil suffit}. The extraction of traffic elements in $\mathbf{W'}$ is carried out by a hard thresholding method \cite{donoho1994threshold}. It consists in weighting in a binary way the traffic elements $\mathbf{W'}$ according to $D_{\theta}\left(\mathbf{w_0} \Vert \mathbf{w'} \right)$ and a threshold value such as:
+where $\mathbf{w}$ is a $k$ element of $\mathbf{W}$ of $F \times 1$ dimension. When $D_{\theta}\left(\mathbf{w_0} \Vert \mathbf{w'} \right)$=1, both element are identicals. If $D_{\theta}\left(\mathbf{w_0} \Vert \mathbf{w'} \right)$=0, the element $\mathbf{w'}$ is fully different. The extraction of traffic elements in $\mathbf{W'}$ is carried out by a hard thresholding method \cite{donoho1994threshold}. It consists in weighting in a binary way the traffic elements $\mathbf{W'}$ according to $D_{\theta}\left(\mathbf{w_0} \Vert \mathbf{w'} \right)$ and a threshold value such as:
 
 \ml{on pourrait tout a fait imaginer l'ajout d'élément de dictionaire random pour se rapprocher de la semi.}
 
@@ -211,18 +214,25 @@ with
 \begin{numcases}{\alpha_k =}
 1  & iff \quad $D_{\theta}\left(\mathbf{w}_{0} \Vert \mathbf{w'} \right) > t_h$, \\
  0 & else.
-\end{numcases}
+\end{numcases}\\
 \end{subequations}
 
-\ml{faire un par resumant les prop des trois methodes avec un accent sur l'utilisation de la connaissance a priori.}
+To sum-up, to approximate the audio spectrogram, $\mathbf{V}$ and estimate the traffic component, 3 methods are used. SUP-NMF is only based on the \textit{a priori} knowledge of the traffic to built the dictionary and is constrained to used it to obtain $\mathbf{\tilde{V}}_{traffic}$. SEM-NMF completes this dictionary by the add of a mobile dictionary to consider the interfering sound events and then offer more flexibility. Finally, TI-NMF, as SUP-NMF, considers first a dictionary composed of \textit{traffic} spectra to then update them. Therefore, it is the entire dictionary that can be fully generalized to the sound scenes. The initiated dictionary allows the focused on the source of interest during the updates. 
 
-These methods are applied on simulated sound scenes in order to compare the estimated sound levels with a non ambiguous reference. In \cite{gloaguen2018Estimation}, the sound corpus was composed of a mix of traffic samples with specific sound classes (\textit{alert, animals, climate, human, mechanics, transportation}). Here, in order to implement this method in embedded sensors, a new and more realistic sound corpus by considering more realistic urban sound environments with many kind of sound sources.
+These above described methods are applied on an evaluation corpus,  composed of simulated sound scenes, in order to compare the estimated sound levels with a non ambiguous reference. This new and more realistic sound corpus is designed by considering realistic urban sound environments with many kind of sound sources mixed.
 
 \section{Design of realistic urban sound scenes}\label{part:urban_scene}
 
-\ml{Il faut faire une figure et un paragraphe resumant la figure. Voici un essai (je pense d'ailleurs que cela devrait faire partie des claims dans l'intro) : In order to validate the above described methods, the evaluation corpus is both required to be realistic and non ambiguous in terms of traffic sound level. The former calls for the use recordings of urban sound environments, and the latter imposes the use of controled use of sound sources with known properties: onset and offset time location, and volume. Indeed, the precise annotation of the sound level of a given source of interest in a polyphonic mixture is not feasible. We thus propose to design such evalution corpus based on two corpora. The first, called the reference corpus, is a set of recordings of urban sound environments, from which a sort of "score" is extracted manually, \textit{i.e.} which sound source is present from this time to this time, at which sound level. The second, called the elemental corpus, is a set of monophonic recordings of sound sources that are occurs in the scenes of the reference. The recordings of the elemental corpus are not taken from the reference corpus. The evaluation corpus is then built by sequencing recordings of the elemental corpus according to the scores of the reference corpus. (Le reste est a reecrire avec les termes proposés)}
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.7\linewidth]{figures/realistic_urban_sound_scene_design.pdf}
+\caption{Bloc diagram of the design of evaluation corpus}
+\label{fig:transcription}
+\end{figure*}
 
-More precisely, the urban sound scenes are taken from 76 recordings from 2 to 5 min, achieved in the \nth{13} district of Paris (France) at 19 different locations \footnote{Recordings were made as part of the Grafic project funded by Ademe}, which cover four various sound environments (Figure \ref{fig:map_grafic}), see Figure \ref{fig:map_grafic}. A complete description of the experimental protocol can be found in \cite{aumond_modelling_2017}. Two of the 76 recordings are rejected for the analysis because the audio files were corrupted, resulting in 74 valid audio files assumed as representative of the variety of sound environments. The recordings are listened and categorized within four different sound environments, as proposed in \cite{can_describing_2015}: park (P, 8 audio files with a cumulative duration of 16min01), quiet street (Q, 33 audio files with a cumulative duration of 77min27), noisy street (N, 24 audio files with a cumulative duration of 56min10) and very noisy street (vN, 9 audio files with a cumulative duration of 21min42). Then, each audio file is annotated, annotating the start, end time \ml{and level ?} of each sound event along with its sound class. \ml{cette phrase ne dis probablement pas ce qsue tu veux dire annotation et Transcription sont des termes equivalents, The aim of the annotation phase is next to transcribe the recordings}, in order to obtain simulated sound scenes with the same \ml{ca peut preter a confusion en implicitant une distribution statistique : distribution} of sound events as the recordings and therefore as close as possible to the realistic scenes.
+The evaluation corpus is both required to be realistic and non ambiguous in terms of traffic sound level. The former calls for the use of recordings of urban sound environments, and the latter imposes the use of controlled sound sources with known properties: onset and offset time location, and sound level. Indeed, the precise annotation of the sound level of a given source of interest in a polyphonic mixture is not feasible. We thus propose to design such evaluation corpus based on two corpora. The first, called the reference corpus, is a set of recordings of urban sound environments, from which a sort of transcription is made, \textit{i.e.} which sound source is present from this time to this time, at which sound level. The second, called the elemental corpus, is a set of monophonic recordings of sound sources that are occurs in the scenes of the reference. The elemental corpus is built-up with still existing sound and with specific recordings, see part \ref{part:simScene}. The evaluation corpus is then built by replicating recordings of the elemental corpus according to the transcript of the reference corpus, see Figure \ref{fig:transcription}.
+
+More precisely, the urban sound scenes are taken from 76 recordings from 2 to 5 min, achieved in the \nth{13} district of Paris (France) at 19 different locations \footnote{Recordings were made as part of the Grafic project funded by Ademe}, which cover four various sound environments (Figure \ref{fig:map_grafic}), see Figure \ref{fig:map_grafic}. A complete description of the experimental protocol can be found in \cite{aumond_modelling_2017}. Two of the 76 recordings are rejected for the analysis because the audio files were corrupted, resulting in 74 valid audio files assumed as representative of the variety of sound environments. The recordings are listened and categorized within four different sound environments, as proposed in \cite{can_describing_2015}: \textit{park} (P, 8 audio files with a cumulative duration of 16min01), \textit{quiet street} (Q, 33 audio files with a cumulative duration of 77min27), \textit{noisy street} (N, 24 audio files with a cumulative duration of 56min10) and \textit{very noisy street} (vN, 9 audio files with a cumulative duration of 21min42). Then, each audio file is annotated, noticing the start, end time and level of each sound event along with its sound class. This annotation phase makes it possible to obtain simulated sound scenes with the same positions of sound events than the recordings and therefore as close as possible to the realistic scenes.
 
 \begin{figure}[t]
 \centering
@@ -234,8 +244,7 @@ More precisely, the urban sound scenes are taken from 76 recordings from 2 to 5 
 
 \subsection{Generation of the evaluation corpus}\label{part:simScene}
 The sound scenes are generated with the \textit{SimScene} software\footnote{Open-source project available at: \url{https://bitbucket.org/mlagrange/simscene}}, \cite{rossignol_simscene:_2015}, which is a simulation software generating monaural sound mixtures in wav format with a 44.1 kHz sampling rate from an isolated sound database.
-This software have already been used in a wide range of experiments for sound detection algorithm assessment \cite{lafay_new_2014, benetos2016detection}. \ml{Pas clair The control of high level parameters can be handled by the user as the sound class occurence, the time between each sample of one sound class, the ratio between the sound level of an event class with the background (i.e the \textit{event background ratio} shorten \textit{ebr})\dots Each parameter is completed with a standard deviation to bring random behavior. It allows too the design of a sound mixture from an annotation text file. A remplacer par ceci: The \textit{SimScene} software allows for several type of sequencing, from abstract ones (time indexes and amplitudes are drawn from random distributions) to  precise ones, where the time indexes and amplitudes for each event is set by the user. The latter type is considered in this study.}
-As output, \textit{SimScene} generates an audio of the global sound mixture and an audio for each sound class present in the scene, which makes it possible to know their exact contributions in the scene, see Figure \ref{fig:example_simScene}.
+This software have already been used in a wide range of experiments for sound detection algorithm assessment \cite{lafay_new_2014, benetos2016detection}. The \textit{SimScene} software allows for several type of sequencing, from abstract ones (time indexes and amplitudes are drawn from random distributions) to  precise ones, where the time indexes and amplitudes for each event is set by the user. The latter type is considered in this study. As output, \textit{SimScene} generates an audio of the global sound mixture and an audio for each sound class present in the scene, which makes it possible to know their exact contributions in the scene, see Figure \ref{fig:example_simScene}.
 
 \begin{figure}[t]
     \centering
@@ -245,17 +254,17 @@ As output, \textit{SimScene} generates an audio of the global sound mixture and 
 \end{figure}
 
 To transcribe the recordings in simulated scenes, a high quality sound database (wav format, 44.1 kHz sampling rate, high \textit{Signal Noise Ratio}) has been built-up from audio samples found online (\textit{freesound.org}) or with the help of an already existing sound database \cite{salamon2014dataset}. The sound database is composed of two categories of sound: the \textit{event} category, which includes 245 brief sound samples considered as salient, with a 1 to 20 seconds duration and classified among 21 sound classes (\textit{ringing bell, whistling bird, car horn, passing car, hammer, barking dog, siren, footstep, metallic noise, voice \dots}) and the \textit{background} (or \textit{texture}) category gathering 154 long duration sounds ($\approx$ 1m30), whose acoustic properties do not vary in time. This category includes among others\textit{whistling bird, crowd noise, rain, children playing in schoolyard, constant traffic noise} \dots sound classes. Each sound class is composed of multiple samples (\textit{carHorn01.wav, carHorn02.wav \dots}) that are randomly chosen by the \textit{simScene} software to bring diversity.
-As the road traffic is the main component in urban environment and is the sound source of interest, recordings of car passages has been made on the Ifsttar's runway. The recordings has been made for 4 cars (Renault Scenic, Renault M\'egane, Renault Clio and Dacia Sandero),  at different speeds and gear ratios. Overall, 103 car passages have been recorded. \ml{ajouter une description sur les problématiques d'overfitting et de generalisation. Cela doit etre un rappel d'un texte ecrit dans la partie nmf. A ce titre, cela pourrait etre une extension de l'etude, on en reparle} The audio samples of the first two cars (Renault Scenic and Renault M\'egane) are included in the \textit{SimScene}'s sound database (50 audio files in total). The last 53 audio samples are dedicated to the dictionary design as part of NMF, see section \ref{part:dictionary_building}. A full description of the recordings can be found in \cite{gloaguen_creation_2017}.
+As the road traffic is the main component in urban environment and is the sound source of interest, recordings of car passages has been made on the Ifsttar's runway. The recordings has been made for 4 cars (Renault Scenic, Renault M\'egane, Renault Clio and Dacia Sandero),  at different speeds and gear ratios. Overall, 103 car passages have been recorded. \ml{ajouter une description sur les problématiques d'overfitting et de generalisation. Cela doit etre un rappel d'un texte ecrit dans la partie nmf. A ce titre, cela pourrait etre une extension de l'etude, on en reparle}. In order to avoid overfitting issues, the audio samples of the first two cars (Renault Scenic and Renault M\'egane) are included in the \textit{SimScene}'s sound database (50 audio files in total). The last 53 audio samples are dedicated to the dictionary design as part of NMF, see section \ref{part:dictionary_building}. A full description of the recordings can be found in \cite{gloaguen_creation_2017}.
 
 \begin{table}[t]
 \centering
-\caption{$mTIR$ for each sound environment.\ml{les captions doivent etre self-contained, pas d'acronymes non evident}}
+\caption{Mean \textit{Traffic Interfering Ratio} for each sound environment.}
 \begin{tabular}{lc}
  & $mTIR$ (dB)\\ \hline
- park & -9.10 ($\pm$ 7.35) \\
- quiet street & 0.88 ($\pm$ 5.92) \\
- noisy street & 6.96 ($\pm$ 5.16) \\
- very noisy street & 15.75 ($\pm$ 9.78) \\ \hline
+ \textit{park} & -9.10 ($\pm$ 7.35) \\
+ \textit{quiet street} & 0.88 ($\pm$ 5.92) \\
+ \textit{noisy street} & 6.96 ($\pm$ 5.16) \\
+ \textit{very noisy street} & 15.75 ($\pm$ 9.78) \\ \hline
 \end{tabular}
 \label{tab:mTIR}
 \end{table}
@@ -276,18 +285,24 @@ The perceptual test is conducted with a panel of 50 subjects that are asked to a
 
 The experimental design is elaborated following a partially Balanced Incomplete Block Design (PBIBD) \cite{john1977optimal} that determines the listening order of each participant based on fixed parameters (number of listeners, total number of audio, number of audio assessed by each listeners). The listening order is then built in a such way than each listener listens the same amount of recorded scenes and transcribed scenes to avoide statistical biais. The experimental design and the listening order per participant are performed with the package \textit{sensoMineR} on the \textit{R} software \cite{le_sensominer:_2008}.\\
 
-The test was available online on the 8 February 2017 and the needed number of participant has been reached 12 days later. During the test, the participants had the possibility to listen to each scene as many times as wanted before assessing, without being able to change their judgment afterwards. The participants could also leave a comment on each audio to explain the rating \footnote{The interface of the experiment is available \url{http://soundthings.org/research/xpRealism}}. Based on the information provided, the panel of 50 listeners was made of 31 males and 18 females (one not documented) with an average age of 36 ($\pm$ 12) years old. $62\%$ of the participants declared having no experience in the listening of urban sound mixtures. Figure \ref{fig:boxPlot_test} summarizes the score distributions of all the listeners for the recorded (rec.) and the transcribed (trans.) scenes.
+The test was available online on the 8 February 2017 and the needed number of participant has been reached 12 days later. During the test, the participants had the possibility to listen to each scene as many times as wanted before assessing, without being able to change their judgment afterwards. The participants could also leave a comment on each audio to explain the rating \footnote{The interface of the experiment is available \url{http://soundthings.org/research/xpRealism}}. Based on the information provided, the panel of 50 listeners was made of 31 males and 18 females (one not documented) with an average age of 36 ($\pm$ 12) years old. $62\%$ of the participants declared having no experience in the listening of urban sound mixtures. 
 
-\begin{figure}[t]
+A Student's t-test is performed with the $H_0$ hypothesis which considers the similarity between the distribution of the average rates for the recorded and the transcribed scenes of each participant with threshold \textit{p-value} of 5$\%$. Results are displayed in Table \ref{tab:ttest_type_of_scene}.
+
+\begin{table}[t]
 \centering
-\includegraphics[width=\linewidth]{figures/testPerceptif_boxplotType_EN.pdf}
-\caption{Box and whiskers plot of the rating of realism according to the type (recorded /transcribed). \ml{Il faut tout expliciter, as tu vraiment besoin de toutes ces informations ?}}
-\label{fig:boxPlot_test}
-\end{figure}
+\begin{tabular}{cccc}
+ 	& \textbf{DOF} & \textbf{\textit{$\mid$ t $\mid$} }   & \textbf{\textit{p-value}} \\ 
+\hline
+ type & 49 & 1.37 &  0.17   \\
+\hline
+\end{tabular}
+\caption{Student's t-test performed on the distribution of the average ratings for the recorded and replicated scenes}
+\label{tab:ttest_type_of_scene}
+\end{table}
 
-The distributions of the notations according to the type are extremely similar. The mean score for the transcribed scenes is even superior to the recorded ones ($m_{trans.}$ = 5.1 ($\pm 1.6$), $m_{rec}$ = 4.9 ($\pm 1.6$)). These results confirm that the recorded and the transcribed scenes are perceived in a similar way by the panel. More details on the results can be found in  \cite{gloaguen_creation_2017}.
 
-\ml{ce serait quand meme bien d'avoir un test stat, au moins un ttest}
+These results confirm that the recorded and the transcribed scenes are perceived in a similar way by the panel (\textit{p-value} $>$ $\alpha$). More details on the results can be found in  \cite{gloaguen_creation_2017}.
 
 As the transcribed sound corpus is sufficiently close to the recordings, these sound mixtures can be used to assess the performances of NMF to estimate the traffic sound level.
 
@@ -304,13 +319,13 @@ The design of the experiment aims at evaluating in a meaningful manner the perfo
 
 \subsection{Metrics}
 
-The traffic sound levels, $\tilde{L}_{p,traffic}$, are compared to the exact values, $L_{p,traffic}$, through the Mean Absolute Error ($MAE$) \cite{willmott2005advantages}. The $MAE$ expresses the quality of the long-term reconstruction of the signal and consists in the average of the absolute difference between the exact and the estimated sound levels,
+The traffic sound levels, $\tilde{L}_{p,traffic}$, are compared to the exact values, $L_{p,traffic}$, through the Mean Absolute Error ($MAE$) \cite{willmott2005advantages}. The $MAE$ consists in the average of the absolute difference between the exact and the estimated sound levels,
 
 \begin{equation}
 MAE = \frac{\sum_{i = 1}^{M} \vert L_{p,traffic}^i - \tilde{L}_{p,traffic}^i \vert}{M}.
 \end{equation}
 
-It is then possible to express the $MAE$ error for each unique setting but, also, to average this metric according to the 4 sound environments to be able to estimate the optimal setting that offers the lowest error for all the sound environments:
+and expresses the quality of the long-term reconstruction of the signal. It is then possible to express the $MAE$ error for each unique setting but, also, to average this metric according to the 4 sound environments to be able to estimate the optimal setting that offers the lowest error for all the sound environments:
 
 \begin{equation}
 mMAE = \frac{\sum_{i = 1}^4 MAE_i}{4},
@@ -349,9 +364,8 @@ The dictionary is designed from a second sound database specially dedicated to t
 
 First the spectrogram of each audio file is computed (window $w = 2^{12}$ with 50 $\%$ overlap). The spectrogram is then cut in multiple temporal frames of $w_t  = \lbrace$0.5, 1$\rbrace$ second duration. In each cut spectrogram, the root mean square on each frequency bin is calculated to obtained a spectrum of $F \times 1$ dimension. This method allows the description of the audio sample with finer spectra and then having the different characteristic pitches of the traffic spectra. An illustrative example on a 3 seconds sample is displayed in Figure \ref{fig:example_dictionary}. From the 53 audio files, we obtain respectively for $\mathbf{w_t}\in$ $\lbrace$0.5, 1$\rbrace$ second, 2218 and 1109 elements.
 
-A $\mathbf{K}$-means clustering algorithm is applied to reduce these dimensions to $\mathbf{K} \in \lbrace$25, 50, 100, 200$\rbrace$ in order to avoid redundant information and decrease the computation time. The resulting $\mathbf{K}$ centroids are taken as the elements of $\mathbf{W}$. \ml{Vraiment utile ? Furthermore, the case where each audio generates one spectrum from its spectrogram is added ($\mathbf{w_t} = all$). In this case, the dictionary elements are based on the spectral envelope of the audio samples. With only 53 audio samples, the number of elements in $\mathbf{W}$ with the $\mathbf{K}$-mean clustering algorithm is reduced to $\mathbf{K} \in \lbrace$25, 50$\rbrace$.}
-
-The obtained dictionary is expressed in third octave bands to decrease the dimensionality. \ml{Citer ou enlever, A previous experimental validation revealed that the use of third octave bands does not impact the performances of the chosen estimator in this study.}  Each basis of $\mathbf{W}$ is then normalized as $ \Vert \mathbf{w}_k \Vert = 1$ where $\Vert \bullet \Vert$ is the $\ell_1$ norm. Table \ref{tab:experimental_factorsNMF} summarizes the different modalities of the two experimental factors ($\mathbf{K}$ and $\mathbf{w_t}$).
+A $\mathbf{K}$-means clustering algorithm is applied to reduce these dimensions to $\mathbf{K} \in \lbrace$25, 50, 100, 200$\rbrace$ in order to avoid redundant information and decrease the computation time. The resulting $\mathbf{K}$ centroids are taken as the elements of $\mathbf{W}$. 
+The obtained dictionary is expressed in third octave bands to decrease the dimensionality. Each basis of $\mathbf{W}$ is then normalized as $ \Vert \mathbf{w}_k \Vert = 1$ where $\Vert \bullet \Vert$ is the $\ell_1$ norm. Table \ref{tab:experimental_factorsNMF} summarizes the different modalities of the two experimental factors ($\mathbf{K}$ and $\mathbf{w_t}$).
 
 \subsection{NMF experimental factors}
 
@@ -458,7 +472,7 @@ TI-NMF & - & 1 & 100 & 1 & 0.35 & 1.38 ($\pm$ 0.88)\\
 \label{tab:results}
 \end{table*}
 
-The LP filter with $f_c = 20$ kHz cut-off frequency is equivalent to considerate the sound level of the entire scene without specific distinction between the sound sources. The error is then important with a high standard deviation ($mMAE =$ 3.76 ($\pm$ 4.35) dB). The lowest error for a LP filter is obtained with $f_c$ = 500 Hz ($mMAE =$ 2.14 ($\pm$ 1.83) dB). \ml{It allows a balance between the discarded and remaining energy through the sound environments.}
+The LP filter with $f_c = 20$ kHz cut-off frequency is equivalent to considerate the sound level of the entire scene without specific distinction between the sound sources. The error is then important with a high standard deviation ($mMAE =$ 3.76 ($\pm$ 4.35) dB). The lowest error for a LP filter is obtained with $f_c$ = 500 Hz ($mMAE =$ 2.14 ($\pm$ 1.83) dB).
 
 When considering all the sound scenes, SUP-NMF does not succeed to achieve a lower error than the 500 Hz LP filter for all the $\beta$ values. By adding the mobile part $\mathbf{W_r}$ in the dictionary, SEM-NMF with $\beta = 0$ and $\beta = 1$ allows a lower error than 500 Hz LP filter with a reduced standard deviation especially for $\beta = 1$ ($mMAE = 1.94$ ($\pm$ 0.38) dB).
 
@@ -479,9 +493,9 @@ Aside SEM-NMF, all the methods show the same error evolution the same error evol
 Despite a fixed dictionary composed of traffic spectra, SUP-NMF fails to identify correctly the traffic component particularly for \textit{park} ($MAE$ = 6.42 dB) environments. With this method, as NMF minimizes the cost function, eq. \ref{eq:min-D-WH}, the dictionary's elements are used to model the other sound sources. In the opposite, for \textit{noisy} and \textit{very noisy} environments, SUP-NMF identifies correctly the traffic components ($MAE$ $<$ 0.6 dB) as it is the main source.
 In the case of SEM-NMF, adding the mobile dictionary, $\mathbf{W_r}$, makes it possible to include the other sound sources not present in the dictionary. If this behavior is advantageous for the \textit{park} environment ($MAE$ = 2.10 dB) where lot of different kind of sources are present, it is less advantageous for the rest of the environments where the traffic becomes predominant resulting in the highest errors. Indeed, this degree of freedom generates higher error as $\mathbf{W_r}$ is not constrained and is free to include traffic component in it, penalizing the traffic sound level estimation.
 
-\ml{Pas clair, enlever ? : Besides having the lowest $mMAE$ error, TI-NMF presents the most performing results. The park environment is the only case where an other NMF approach out-performed TI-NMF ($MAE$ = 2.95 dB). In this sound environment, the traffic dictionary is then composed, in average, of more than half the 200 elements in $\mathbf{W'}$ (136 elements). For the rest of the sound environments, TI-NMF has the lowest error. For very noisy environment the error is even very low ($MAE=$ 0.28 dB). In this case, in average, $\mathbf{W'}$ is composed of 198 traffic elements. This method out-performed SUP-NMF since, as $\mathbf{W_0}$ is updated, the final dictionary $\mathbf{W'}$ is then most suited to the sound scene than a fixed dictionary.}
+Finally, TI-NMF presents the most performing results, except in the \textit{park} environment ($MAE$ = 2.95 dB). In this sound environment, with a threshold value $t_h$ = 0.32, the traffic dictionary is composed, on average, of 136 elements. For the rest of the sound environments, TI-NMF has the lowest errors. For very noisy environment the error is even very low ($MAE=$ 0.28 dB). With, on average 198 elements in $\mathbf{W}_{traffic}$, almost all the elements present in $\mathbf{W'}$ can be considered as traffic elements. 
 
-Considering a unique dictionary fitted to the sound scene under evaluation thus makes TI-NMF very effective when traffic is predominant while, by the use of the thresholding, it discards the elements of the dictionary that deviated too much when the traffic is less present.
+Considering a unique dictionary fitted to the sound scene under evaluation thus makes TI-NMF very effective when traffic is predominant while, by the use of the thresholding, it discards the elements of the dictionary that deviate too much when the traffic is less present.
 
 \section{Conclusion}
 
@@ -493,7 +507,7 @@ The proposed approach, named Thresholded Initialized NMF, achieved the lowest er
 
 Further analyses are required to extend the proposed method to other sound sources, such as birds or voices sounds, which can conveniently be done by replacing or adding elements in the dictionary. This would prove useful in the context of muti-source noise mapping that is  gaining interest \cite{aumond2017Probabilistic, aletta2015soundscape}. Finally, the selected parameters stand for the corpus of sound mixtures of this study. Further analyses on various corpus of sound scenes are needed to evaluate the robustness of the method, and select the most relevant approaches for specific sound environments (predominance of water or industrial sounds, rural environments \dots).
 
-For reproducibility purposes, the evaluation corpus, the experimental protocol and the programs developed under the Matlab software are available online \footnote{\url{https://github.com/jean-remyGloaguen/articleApplied2018}}. %This study proposes also a realistic urban sound corpus that could be greatly appreciate for research communities dedicated to the detection, identification or source separation tasks.
+For reproducibility purposes, the evaluation corpus, the experimental protocol and the programs developed under the Matlab software are available online \footnote{\url{https://github.com/jean-remyGloaguen/articleApplied2018}}. 
 
 
 \section*{References}
