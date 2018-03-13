@@ -55,7 +55,7 @@ else
     sequentialData = config.sequentialData;
 end
 
-for ii = 1:numberScene
+parfor ii = 1:numberScene
     
     fileTraffic = audioread(strcat(creationSceneDir,globalName{ii},'_traffic.wav'));
     fileRest = audioread(strcat(creationSceneDir,globalName{ii},'_interfering.wav'));
