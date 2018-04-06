@@ -11,7 +11,8 @@ function [config, store, obs] = nmfthgr2estimation(config, setting, data)
 % Date: 01-Dec-2017                                                                
                                                                                    
 % Set behavior for debug mode                                                      
-if nargin==0, NMFThresholdGrafic('do', 2, 'mask', {}); return; else store=[]; obs=[]; end
+if nargin==0, NMFThresholdGrafic('do', 2, 'mask', {2 0 4 3 1, ...
+	3 0 6 0 3, 0 3 0 1 0, 0 1:3 1:2 4}); return; else store=[]; obs=[]; end
 
 dataset = setting.dataset;
 type = setting.type;
