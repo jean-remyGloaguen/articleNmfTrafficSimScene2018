@@ -316,7 +316,7 @@ A reference estimator is necessary to be able to compare the performances of the
 \mathbf{\tilde{V}}_{traffic} = \mathbf{V}_{f_c}.
 \end{equation}
 
-Different cut-off frequencies have been chosen such as $f_c \in \lbrace$500, 1k, 2k, 5k, 10k, 20k$\rbrace$ Hz. The experimental factors related to this estimator are summarized in Table \ref{tab:experimental_factorsFilter}.
+Different cut-off frequencies have been chosen such as $f_c \in \lbrace$500, 1k, 2k, 5k, 10k, 20k$\rbrace$ Hz. The experimental factors related to this estimator are summarized in Table \ref{tab:experimental_factors}.
 
 The second estimator is based on the three NMF formula presented in part \ref{part:nmf} (see Figure \ref{fig:bloc_diagram_nmf}). Multiple experimental factors are involved in this second estimator where each of them having different modalities.
 
@@ -333,13 +333,13 @@ The dictionary is designed from a sound database specially dedicated to this tas
 
 First the spectrogram of each audio file is computed ($w = 2^{12}$ sample points with 50 $\%$ overlap). The spectrogram is then cut in multiple temporal frames of $\mathbf{w_t}  \in \lbrace$0.5, 1$\rbrace$ second duration. In each frame, the root mean square on each frequency bin is calculated to obtained a spectrum of $F \times 1$ dimension. This method allows the description of the audio sample with a finer spectra and then having the different characteristic pitches of the traffic spectra. An illustrative example on a 3 seconds sample is displayed in Figure \ref{fig:example_dictionary}. From the 53 audio files, we obtain respectively 2218 elements for $\mathbf{w_t} = 0.5$ second and 1109 elements for $\mathbf{w_t} = 1$ second.
 
-A $\mathbf{K}$-means clustering algorithm is applied to those elements to reduce these dimensions to $\mathbf{K} \in \lbrace$25, 50, 100, 200$\rbrace$ in order to avoid redundant information and decrease the computation time. The resulting $\mathbf{K}$ cluster centroids are taken as the elements of $\mathbf{W}$. Each basis of $\mathbf{W}$ is then normalized as $ \Vert \mathbf{w} \Vert = 1$ where $\Vert \bullet \Vert$ is the $\ell_1$ norm. Table \ref{tab:experimental_factorsNMF} summarizes the different modalities of the two experimental factors ($\mathbf{K}$ and $\mathbf{w_t}$).
+A $\mathbf{K}$-means clustering algorithm is applied to those elements to reduce these dimensions to $\mathbf{K} \in \lbrace$25, 50, 100, 200$\rbrace$ in order to avoid redundant information and decrease the computation time. The resulting $\mathbf{K}$ cluster centroids are taken as the elements of $\mathbf{W}$. Each basis of $\mathbf{W}$ is then normalized as $ \Vert \mathbf{w} \Vert = 1$ where $\Vert \bullet \Vert$ is the $\ell_1$ norm. Table \ref{tab:experimental_factors} summarizes the different modalities of the two experimental factors ($\mathbf{K}$ and $\mathbf{w_t}$).
 
 \subsection{NMF experimental factors}
 
 NMF is performed for 3 $\beta$-divergences: $\beta$ = 2 (Euclidean distance), $\beta$ = 1 (Kullback-Leibler divergence) and $\beta = 0$ (Itakura-Sa\"ito divergence). The spectrogram $\mathbf{V}$ and the dictionary $\mathbf{W}$ are expressed in a logarithmic scale through a third octave band representation that reduces the high frequency predominance where the traffic component is absent. In addition, as the number of frequency bins is reduced ($F$ = 29), the computation time is reduced too. 400 iterations are performed to get a stabilized results. For SEM-NMF, the number of elements in $\mathbf{W_r}$ is set to $J = 2$. For hard thresholding, the threshold value, $\mathbf{t_h}$ is set between 0.30 and 0.60 with a 0.01 increment.
 Each unique association of modalities between each experimental factor forms an experimental setting. For the filter estimator, 24 settings are computed (4 $\times$ 6). For SUP and SEM-NMF, 192 settings are computed (4 $\times$ 2 $\times$ 2 $\times$ 4 $\times$ 3). Finally, for TI-NMF, the number of settings is much higher (2976) due to the higher cardinality of the set of threshold values (4 $\times$ 1 $\times$ 2 $\times$ 4  $\times$ 3 $\times$ 31).
-The experimental factors and their different modalities are displayed in Tables \ref{tab:experimental_factorsFilter} and \ref{tab:experimental_factorsNMF}.
+The experimental factors and their different modalities are displayed in Table \ref{tab:experimental_factors}.
 
 The approximated traffic spectrograms $\mathbf{\tilde{V}}_{traffic}$ are obtained after 400 iterations. The estimated traffic sound level in dB, $\tilde{L}_{p, traffic}$, is then computed,
 
@@ -350,28 +350,6 @@ The approximated traffic spectrograms $\mathbf{\tilde{V}}_{traffic}$ are obtaine
 where $p_0$ is the reference sound pressure, $p_0 = 2\times 10^{-5}$ Pa. For each setting, $M$ traffic sound levels, corresponding to the $M$ scenes of each sound environment, are then calculated.
 
 \begin{table*}[t]
-\caption{Experimental factors and their modalities for the frequency low-pass filter baseline estimator.}
-\centering
-\begin{tabularx}{17.5cm}{L{3cm}@{}C{12cm}@{}C{2cm}@{}}
-	\hline
-    \textbf{\begin{tabular}[c]{@{}l@{}}experimental \\ factors\end{tabular}} & \textbf{modalities} & \begin{tabular}[c]{@{}C{2cm}@{}}\textbf{number of}\\ \textbf{modalities}\end{tabular}\\ \toprule
-\end{tabularx}
-
-\begin{tabularx}{17.5cm}{L{3cm}@{}C{3cm}@{}@{}C{3cm}@{}@{}C{3cm}@{}@{}C{3cm}@{}C{2cm}@{}}
-    \textbf{sound environment} & \begin{tabular}[c]{@{}c@{}}park\\ 'P'\end{tabular} & \begin{tabular}[c]{@{}c@{}}quiet street\\ 'Q'\end{tabular} & \begin{tabular}[c]{@{}c@{}}noisy street\\ 'N' \end{tabular}& \begin{tabular}[c]{@{}c@{}}very noisy street\\ 'vN'\end{tabular} & 4\\
-\end{tabularx}
-
-\begin{tabularx}{17.5cm}{L{3cm}@{}@{}C{2cm}@{}@{}C{2cm}@{}@{}C{2cm}@{}@{}C{2cm}@{}@{}C{2cm}@{}@{}C{2cm}@{}C{2cm}@{}}
-\rowcolor[HTML]{C0C0C0}
-   $\mathbf{f_c}$ (kHz) & 0.5 & 1 & 2 &  5 & 10 & 20 & 6\\
-   \bottomrule
-\end{tabularx}
-
-\label{tab:experimental_factorsFilter}
-\end{table*}
-
-
-\begin{table*}[t]
 \centering
 \caption{Experimental factors and their modalities for the NMF estimator.}
 \begin{tabularx}{17.5cm}{L{3cm}@{}C{12cm}@{}C{2cm}@{}}
@@ -380,12 +358,17 @@ where $p_0$ is the reference sound pressure, $p_0 = 2\times 10^{-5}$ Pa. For eac
 \end{tabularx}
 
 \begin{tabularx}{17.5cm}{L{3cm}@{}C{3cm}@{}@{}C{3cm}@{}@{}C{3cm}@{}@{}C{3cm}@{}C{2cm}@{}}
+	\rowcolor[HTML]{C0C0C0}
     \textbf{sound environment} & \begin{tabular}[c]{@{}c@{}}park\\ 'P'\end{tabular} & \begin{tabular}[c]{@{}c@{}}quiet street\\ 'Q'\end{tabular} & \begin{tabular}[c]{@{}c@{}}noisy street\\ 'N' \end{tabular}& \begin{tabular}[c]{@{}c@{}}very noisy street\\ 'vN'\end{tabular} & 4\\
 \end{tabularx}
 
-\begin{tabularx}{17.5cm}{L{3cm}@{}C{4cm}@{}@{}@{}C{4cm}@{}@{}C{4cm}@{}C{2cm}@{}}
-	\rowcolor[HTML]{C0C0C0}
-  \textbf{method} & SUP NMF & SEM NMF & TI NMF & 3\\
+\begin{tabularx}{17.5cm}{L{3cm}@{}C{3cm}@{}@{}C{3cm}@{}@{}C{3cm}@{}@{}C{3cm}@{}C{2cm}@{}}
+  \textbf{method} &  LP Filter & SUP NMF & SEM NMF & TI NMF & 4\\
+\end{tabularx}
+
+\begin{tabularx}{17.5cm}{L{3cm}@{}@{}C{2cm}@{}@{}C{2cm}@{}@{}C{2cm}@{}@{}C{2cm}@{}@{}C{2cm}@{}@{}C{2cm}@{}C{2cm}@{}}
+\rowcolor[HTML]{C0C0C0}
+   $\mathbf{f_c}$ (kHz) & 0.5 & 1 & 2 &  5 & 10 & 20 & 6\\
 \end{tabularx}
 
 \begin{tabularx}{17.5cm}{L{3cm}@{}C{6cm}@{}@{}C{6cm}@{}C{2cm}@{}}
@@ -407,7 +390,7 @@ where $p_0$ is the reference sound pressure, $p_0 = 2\times 10^{-5}$ Pa. For eac
    hard threshold $\mathbf{t_h}$ & from 0.30 to 0.60 with a 0.01 step & 31\\
    \bottomrule
 \end{tabularx}
-\label{tab:experimental_factorsNMF}
+\label{tab:experimental_factors}
 \end{table*}
 
 \subsection{Metrics}
@@ -492,26 +475,26 @@ In the case of SEM-NMF, adding the mobile dictionary, $\mathbf{W_r}$, makes it p
 
 Finally, TI-NMF presents the most performing results, except in the \textit{park} environment ($MAE$ = 2.95 dB). In this sound environment, with the threshold value $t_h$ = 0.32, the traffic dictionary is composed, on average, of 136 elements.
 By increasing this value, it would be possible to put aside the spectra furthest away of the traffic elements and then decrease the error. For the rest of the sound environments, TI-NMF has the lowest errors. For very noisy environment the error is even very low ($MAE=$ 0.28 dB). With on average 198 elements in $\mathbf{W}_{traffic}$, almost all the elements present in $\mathbf{W'}$ can be considered as traffic elements. 
-Considering a unique dictionary fitted to the sound scene under evaluation thus makes TI-NMF very effective when traffic is predominant, while the thresholding step make it possible to discards the elements of the dictionary that deviate too much when the traffic is less present.
+Considering a unique dictionary fitted to the sound scene under evaluation thus makes TI-NMF very effective when traffic is predominant, while the thresholding step makes it possible to discard the elements of the dictionary that deviate too much when the traffic is less present.
 
 \begin{figure*}[t!]
 \centering
 \begin{subfigure}{0.45\textwidth}
 \includegraphics[width=\linewidth]{./figures/evolutionK_AA.pdf}
-\caption{Influence of the experimental factor $K$ (TI-NMF, $w_t$ = 0.5 s, $\beta$ = 2, $t_h$ = 0.32.} \label{fig:grafic_K}
+\caption{Influence of the experimental factor $\mathbf{K}$ (TI-NMF, $w_t$ = 0.5 s, $\beta$ = 2, $t_h$ = 0.32, 400 iterations).} \label{fig:grafic_K}
 \end{subfigure}
 \begin{subfigure}{0.45\textwidth}
 \includegraphics[width=\linewidth]{./figures/evolutionWt_AA.pdf}
-\caption{Influence of the experimental factor $K$ (TI-NMF, $K$ = 200 s, $\beta$ = 2, $t_h$ = 0.32.} \label{fig:grafic_wt}
+\caption{Influence of the experimental factor $\mathbf{w_t}$ (TI-NMF, $K$ = 200 s, $\beta$ = 2, $t_h$ = 0.32, 400 iterations).} \label{fig:grafic_wt}
 \end{subfigure}
-\caption{Influence of the number of elements $K$ \subref{fig:grafic_K} and the temporal frame $w_t$ \subref{fig:grafic_wt} on the $mMAE$ error with the best TI-NMF obtained in Table \ref{tab:results}.} \label{fig:grafic_K_wt}
+\caption{Influence of the number of elements $\mathbf{K}$ (\subref{fig:grafic_K}) and the temporal frame $\mathbf{w_t}$ (\subref{fig:grafic_wt}) on the $mMAE$ error with the best TI-NMF obtained in Table \ref{tab:results}.} \label{fig:grafic_K_wt}
 \end{figure*}
 
-To visualized the behavior of this approach, the evolution of the normalized cost function ($D(\mathbf{V}\Vert \mathbf{WH})/(F\times N)$ as the duration of each audio sample is different) and the error $MAE$ along the iteration are displayed for each sound environment with the TI-NMF in the Figure \ref{fig:grafic_cost_mae}. After the 400 iterations, the cost functions for each sound environment, is very low meaning that the approximations of $\mathbf{V}$ by $\mathbf{WH}$ are very similar. However, they did not reach the convergence as the cost functions continue to decrease. Nevertheless, these behaviors have to be seen with the evolution of the $MAE$ error in Figure \ref{fig:grafic_mae}. For each sound environment, the traffic error reconstruction is constant after the 400 iterations which mean that the updates of $\mathbf{W}$ and $\mathbf{H}$ are dedicated to the interfering sound sources. Also, even if the cost function is higher for the \textit{very noisy street} than the \textit{park} sound environment, the $MAE$ error is lower due to the high presence of the \textit{traffic} component in it.
+To better understand the behavior of TI-NMF, the evolution of the normalized cost function ($D(\mathbf{V}\Vert \mathbf{WH})/(F\times N)$ as the duration of each audio sample is different) and the error $MAE$ as the function of the number of iterations are displayed for each sound environment in Figure \ref{fig:grafic_cost_mae}. For each sound environment, the cost function is very low after 400 iterations, meaning that $\mathbf{WH}$ approximates correctly $\mathbf{V}$. However, even if the convergence is not reached (Figure \ref{fig:grafic_cost}), the traffic error reconstruction is constant after the \nth{200} iteration (Figure \ref{fig:grafic_mae}), which means that the updates of $\mathbf{W}$ and $\mathbf{H}$ are mostly dedicated to the interfering sound sources. Also, even if the cost function is higher for the \textit{very noisy street} than the \textit{park}, the traffic sound level estimation is better in the \textit{very noisy street} sound environment due to the higher presence of this component in it. 
 
 
-Finally, for TI-NMF, the influence of the number of elements $K$ in $\mathbf{W}$ and the size of the temporal frame $w_t$ on the $mMAE$ error are summarized in Figure \ref{fig:grafic_K_wt}. 
-Naturally, with the increase of the number of basis in $\mathbf{W}$, the traffic error reconstruction decrease as it allows more basis to describe the traffic sound source. If this improvement is significant between 25 and 100 elements, its influence decrease between 100 and 200 elements suggesting that the increase of the size of $K$ will not improve a lot the quality of the estimation. In opposite, the temporal frame is not an influential  parameter for TI-NMF. As the matrices are updates, it is logical that the variations between the initial dictionary $\mathbf{W_0}$ due to this experimental factor disappear.
+Finally, the influence of the number of elements $\mathbf{K}$ in $\mathbf{W}$ and the size of the temporal frame $\mathbf{w_t}$ on the $mMAE$ error made with TI-NMF, with the other experimental factors keep constant, are summarized in Figure \ref{fig:grafic_K_wt}. 
+Naturally, the traffic error reconstruction decreases, with the increase of the number of basis in $\mathbf{W}$, as it allows more basis to describe the traffic sound source. If this improvement is major between 25 and 100 elements, its influence decreases between 100 and 200 elements suggesting that the increase of the size of $\mathbf{K}$ will not improve significantly the quality of the estimation. The temporal frame $\mathbf{w_t}$ is a less influential parameter for TI-NMF. As the matrices are updates at each iteration, it makes sense that the variations in the spectra shape in $\mathbf{W_0}$, due to this experimental factor, will disappear after a set of iterations.
 
 \section{Conclusion}
 
@@ -521,7 +504,7 @@ The results confirm the potential of the NMF method on such application scenario
 
 The proposed approach, named Thresholded Initialized NMF, achieved the lowest error in the evaluation corpus. Consequently, in the case where the location or the type of sound environments the sensors are monitoring cannot be identified (for instance within a mobile measurement framework), TI-NMF appears to be the most appropriate method. If the sound environment can be identified through a prior analysis, or based on positioning data \cite{can2015noise,lavandier2016urban}, it should be possible to adapt the estimation procedure by selecting the most efficient approach in order to further reduce the error in the estimated road traffic sound levels.
 
-Further analyses are required to extend the proposed method to other sound sources, such as birds or voices sounds, which can conveniently be done by replacing or adding elements in the dictionary. This utilization would be useful in the context of muti-source noise mapping that is gaining interest \cite{aumond2017Probabilistic, aletta2015soundscape}. Finally, the parameters selected in this study are valid for this evaluation corpus. Further analyses on various corpus of sound scenes are needed to evaluate the robustness of the method and select the most relevant approaches for specific sound environments (predominance of water or industrial sounds, rural environments \dots).
+Further analyses are required to extend the proposed method to other sound sources, such as birds or voices sounds, which can conveniently be done by replacing or adding elements in the dictionary. This utilization would be useful in the context of muti-source noise mapping that is gaining interest \cite{aumond2018probabilistic, aletta2015soundscape}. Finally, the parameters selected in this study are valid for this evaluation corpus. Further analyses on various corpus of sound scenes are needed to evaluate the robustness of the method and select the most relevant approaches for specific sound environments (predominance of water or industrial sounds, rural environments\dots).
 
 For reproducibility purposes, the evaluation corpus, the experimental protocol and the programs developed under the Matlab software are available online \footnote{\url{https://github.com/jean-remyGloaguen/articleNmfTrafficSimScene2018}} as the sound dataset \footnote{\url{https://zenodo.org/record/1184443}}. 
 
